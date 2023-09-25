@@ -1,4 +1,3 @@
-//user.service.ts
 import { Injectable } from '@nestjs/common';
 import { User } from '../entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -15,8 +14,13 @@ export class UserService {
     private userRepository: Repository<User>,
   ) {}
 
-  findById(id: string): Promise<User> {
-    return this.userRepository.findOne({ where: { id } });
+  // findById(id: string): Promise<User> {
+  //   return this.userRepository.findOne({ where: { id } }) ;
+  // }
+  findById(id: string): Promise<User | null> {
+    return this.userRepository.findOne({
+      where: { id },
+    }) as Promise<User | null>;
   }
 
   private async hashPassword(password: string, salt: string): Promise<string> {
@@ -24,13 +28,14 @@ export class UserService {
   }
 
   async create(signupDto: SignupDto): Promise<User> {
-    const { email, password, username } = signupDto;
+    const { email, password, username, phoneNumber } = signupDto;
     const user = new User();
 
     user.salt = await bcrypt.genSalt();
     user.password = await this.hashPassword(password, user.salt);
     user.email = email;
     user.username = username;
+    user.phoneNumber = phoneNumber;
 
     try {
       await user.save();
@@ -40,11 +45,11 @@ export class UserService {
     }
   }
 
-  async signIn(loginDto: LoginDto): Promise<LoginResponseDto> {
+  async signIn(loginDto: LoginDto): Promise<LoginResponseDto | null> {
     const { email, password } = loginDto;
     const user = await this.userRepository.findOne({ where: { email } });
 
-    if (user && user.validatePassword(password)) {
+    if (user && (await user.validatePassword(password))) {
       const userResponse = new LoginResponseDto();
 
       userResponse.username = user.username;

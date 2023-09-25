@@ -19,3 +19,24 @@
     "noFallthroughCasesInSwitch": false
   }
 }
+// {
+//   "compilerOptions": {
+//     "module": "commonjs",
+//     "declaration": true,
+//     "removeComments": true,
+//     "emitDecoratorMetadata": true,
+//     "experimentalDecorators": true,
+//     "allowSyntheticDefaultImports": true,
+//     "target": "es2022", // Adjust based on your Node.js version
+//     "sourceMap": true,
+//     "outDir": "./dist",
+//     "baseUrl": "./",
+//     "incremental": true,
+//     "skipLibCheck": true,
+//     "strictNullChecks": true, // Enable strict type checking
+//     "noImplicitAny": true, // Enable strict type checking
+//     "strictBindCallApply": true, // Enable strict type checking
+//     "forceConsistentCasingInFileNames": true, // Enforce consistent casing
+//     "noFallthroughCasesInSwitch": true // Enable strict switch statement checking
+//   }
+// }
